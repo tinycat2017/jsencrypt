@@ -10,7 +10,7 @@ if (rng_pool == null) {
   rng_pool = [];
   rng_pptr = 0;
   let t;
-  if (window.crypto && window.crypto.getRandomValues) {
+  if (typeof window !== 'undefined' && window.crypto && window.crypto.getRandomValues) {
     // Extract entropy (2048 bits) from RNG if available
     const z = new Uint32Array(256);
     window.crypto.getRandomValues(z);
@@ -40,6 +40,9 @@ if (rng_pool == null) {
       // Sometimes Firefox will deny permission to access event properties for some reason. Ignore.
     }
   };
+  if (typeof window === 'undefined') {
+    return;
+  }
   if (window.addEventListener) {
       window.addEventListener("mousemove", onMouseMoveListener, false);
   } else if ((window as any).attachEvent) {
